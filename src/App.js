@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
 
+import './App.css';
+import axios from 'axios'
+import MemePage from './MemePage';
+
+function api() {
+  const res = axios.get('api.giphy.com/v1/gifs/random', {
+      params: {
+          api_key:'XcEYFeZJVXFwiUoyPRdn16bci6Ja4d9e'
+      }
+  })
+  return res.url;
+}
+let meme = api();
+console.log(meme)
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MemePage meme={meme}/>
     </div>
   );
 }
