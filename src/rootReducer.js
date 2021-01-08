@@ -1,14 +1,24 @@
-const INITIAL_STATE = {count: 0, color: 'red'}
-
-function rootReducer(state = INITIAL_STATE, action){
-switch(action.type){
-    case 'INCREMENT':
-        return {...state, count: state.count + 1}
-    case 'DECREMENT':
-        return {...state, count: state.count -1}
-    default: 
-        return state;
-}
-}
-
-export default rootReducer;
+const DEFAULT_STATE = {
+    memes: []
+  };
+  
+  function rootReducer(state = DEFAULT_STATE, action) {
+    if (action.type === "ADD_MEME") {
+      return {
+        ...state,
+        memes: [
+          ...state.memes, { ...action.meme }
+        ]
+      };
+    }
+    //state spreads memes into meme array, then filters out for next action
+    if (action.type === "REMOVE_MEME") {
+      return {
+        ...state,
+        memes: state.memes.filter(meme => meme.id !== action.id)
+      };
+    }
+    return state;
+  }
+  
+  export default rootReducer;

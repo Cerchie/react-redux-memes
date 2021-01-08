@@ -1,22 +1,36 @@
+import React from "react";
+import NewMemeForm from "./NewMemeForm";
+import Meme from "./Meme";
+import "./App.css";
+import { useSelector, useDispatch } from "react-redux";
 
-import './App.css';
-import axios from 'axios'
-import MemePage from './MemePage';
-
-function api() {
-  const res = axios.get('api.giphy.com/v1/gifs/random', {
-      params: {
-          api_key:'XcEYFeZJVXFwiUoyPRdn16bci6Ja4d9e'
-      }
-  })
-  return res.url;
-}
-let meme = api();
-console.log(meme)
 function App() {
+  const memes = useSelector(st => st.memes); //grabbing memes for memeComps func
+  const dispatch = useDispatch(); //getting dispatch so we can pass add and delete meme
+  //funcs down to Meme and NewMemeForm
+
+  function addMeme(newMeme) {
+    dispatch({ type: "ADD_MEME", meme: newMeme });
+  }
+
+  function deleteMeme(id) {
+    dispatch({type: "REMOVE_MEME", id });
+  }
+
+  const memeComps = memes.map(m => (
+    <Meme
+      key={m.id}
+      topText={m.topText}
+      bottomText={m.bottomText}
+      url={m.url}
+      deleteMeme={() => deleteMeme(m.id)}
+    />
+  ));
   return (
     <div className="App">
-      <MemePage meme={meme}/>
+      <NewMemeForm addMeme={addMeme} />
+      <hr />
+      {memeComps}
     </div>
   );
 }
